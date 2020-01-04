@@ -1,0 +1,10 @@
+{
+	"name" : "recast",
+	"url" : "https://github.com/jefvel/recast",
+	"license" : "BSD",
+    "description" : "Recast support for Haxe HL",
+    "version" : "0.1.0",
+	"releasenote" : "",
+	"contributors" : ["jefvel"],
+	"dependencies": { "webidl" : "" }
+}
