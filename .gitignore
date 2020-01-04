@@ -1,1 +1,17 @@
 src/recast.cpp
+.vs
+ALL_BUILD.vcxproj
+ALL_BUILD.vcxproj.filters
+CMakeCache.txt
+CMakeFiles
+Debug
+Release
+ZERO_CHECK.vcxproj
+ZERO_CHECK.vcxproj.filters
+cmake_install.cmake
+recast.hdll.dir
+recast.hdll.vcxproj
+recast.hdll.vcxproj.filters
+recast.hdll.vcxproj.user
+recast.sln
+x64

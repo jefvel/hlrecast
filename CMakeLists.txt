@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.12)
 project(recast)
 
-option(RECAST_NAVIGATION_PATH "Path to recastnavigation repository" ../../recastnavigation)
+set(RECAST_NAVIGATION_PATH "../../recastnavigation" CACHE PATH "Path to recastnavigation repository")
+set(HASHLINK_LIB_PATH "../../hashlink/x64/Release" CACHE PATH "Path to where hashlink libraries are")
 
 function(set_as_hdll target)
     set_target_properties(${target}.hdll
@@ -16,6 +17,8 @@ include_directories(../../hashlink/src)
 include_directories(${RECAST_NAVIGATION_PATH}/Recast/Include)
 
 #link_directories(src/bullet/bin)
+
+link_directories(${HASHLINK_LIB_PATH})
 
 add_definitions(-DRECAST_EXPORTS)
 add_definitions(-fpermissive)
