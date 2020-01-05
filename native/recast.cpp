@@ -88,7 +88,6 @@ struct hlRecastConfig
 };
 
 rcConfig m_cfg;
-
 rcHeightfield* m_solid;
 unsigned char* m_triareas;
 rcCompactHeightfield* m_chf;
@@ -135,7 +134,7 @@ void setConfig(const hlRecastConfig conf) {
 }
 
 
-HL_PRIM bool HL_NAME(build_mesh)(vbyte *vertbytes, int vertCount, vbyte *triBytes, int triCount, recast_struct<hlRecastConfig> *conf) {
+HL_PRIM vbyte *HL_NAME(build_mesh)(vbyte *vertbytes, int vertCount, vbyte *triBytes, int triCount, recast_struct<hlRecastConfig> *conf, int &blobSize) {
 	hlRecastConfig c = conf->value;
 
 	float *verts = (float*)vertbytes;
@@ -155,12 +154,12 @@ HL_PRIM bool HL_NAME(build_mesh)(vbyte *vertbytes, int vertCount, vbyte *triByte
 	m_solid = rcAllocHeightfield();
 	if (!m_solid) {
 		ctx.log(RC_LOG_ERROR, "buildNavigation: Out of memory 'solid'.");
-		return false;
+		return NULL;
 	}
 
 	if (!rcCreateHeightfield(&ctx, *m_solid, m_cfg.width, m_cfg.height, m_cfg.bmin, m_cfg.bmax, m_cfg.cs, m_cfg.ch)) {
 		ctx.log(RC_LOG_ERROR, "buildNavigation: Could not create solid heightfield.");
-		return false;
+		return NULL;
 	}
 
     // Allocate array that can hold triangle area types.
@@ -170,7 +169,7 @@ HL_PRIM bool HL_NAME(build_mesh)(vbyte *vertbytes, int vertCount, vbyte *triByte
 	if (!m_triareas)
 	{
 		ctx.log(RC_LOG_ERROR, "buildNavigation: Out of memory 'm_triareas' (%d).", triCount);
-		return false;
+		return NULL;
 	}
 	
 	// Find triangles which are walkable based on their slope and rasterize them.
@@ -181,7 +180,7 @@ HL_PRIM bool HL_NAME(build_mesh)(vbyte *vertbytes, int vertCount, vbyte *triByte
 	if (!rcRasterizeTriangles(&ctx, verts, vertCount, tris, m_triareas, triCount, *m_solid, m_cfg.walkableClimb))
 	{
 		ctx.log(RC_LOG_ERROR, "buildNavigation: Could not rasterize triangles.");
-		return false;
+		return NULL;
 	}
 
 	if (!m_keepInterResults)
@@ -216,12 +215,12 @@ HL_PRIM bool HL_NAME(build_mesh)(vbyte *vertbytes, int vertCount, vbyte *triByte
 	if (!m_chf)
 	{
 		ctx.log(RC_LOG_ERROR, "buildNavigation: Out of memory 'chf'.");
-		return false;
+		return NULL;
 	}
 	if (!rcBuildCompactHeightfield(&ctx, m_cfg.walkableHeight, m_cfg.walkableClimb, *m_solid, *m_chf))
 	{
 		ctx.log(RC_LOG_ERROR, "buildNavigation: Could not build compact data.");
-		return false;
+		return NULL;
 	}
 	
 	if (!m_keepInterResults)
@@ -234,7 +233,7 @@ HL_PRIM bool HL_NAME(build_mesh)(vbyte *vertbytes, int vertCount, vbyte *triByte
 	if (!rcErodeWalkableArea(&ctx, m_cfg.walkableRadius, *m_chf))
 	{
 		ctx.log(RC_LOG_ERROR, "buildNavigation: Could not erode.");
-		return false;
+		return NULL;
 	}
 
 	/*
@@ -276,14 +275,14 @@ HL_PRIM bool HL_NAME(build_mesh)(vbyte *vertbytes, int vertCount, vbyte *triByte
 		if (!rcBuildDistanceField(&ctx, *m_chf))
 		{
 			ctx.log(RC_LOG_ERROR, "buildNavigation: Could not build distance field.");
-			return false;
+			return NULL;
 		}
 		
 		// Partition the walkable surface into simple regions without holes.
 		if (!rcBuildRegions(&ctx, *m_chf, 0, m_cfg.minRegionArea, m_cfg.mergeRegionArea))
 		{
 			ctx.log(RC_LOG_ERROR, "buildNavigation: Could not build watershed regions.");
-			return false;
+			return NULL;
 		}
 	}
 	else if (m_partitionType == SAMPLE_PARTITION_MONOTONE)
@@ -293,7 +292,7 @@ HL_PRIM bool HL_NAME(build_mesh)(vbyte *vertbytes, int vertCount, vbyte *triByte
 		if (!rcBuildRegionsMonotone(&ctx, *m_chf, 0, m_cfg.minRegionArea, m_cfg.mergeRegionArea))
 		{
 			ctx.log(RC_LOG_ERROR, "buildNavigation: Could not build monotone regions.");
-			return false;
+			return NULL;
 		}
 	}
 	else // SAMPLE_PARTITION_LAYERS
@@ -302,7 +301,7 @@ HL_PRIM bool HL_NAME(build_mesh)(vbyte *vertbytes, int vertCount, vbyte *triByte
 		if (!rcBuildLayerRegions(&ctx, *m_chf, 0, m_cfg.minRegionArea))
 		{
 			ctx.log(RC_LOG_ERROR, "buildNavigation: Could not build layer regions.");
-			return false;
+			return NULL;
 		}
 	}
 
@@ -316,12 +315,12 @@ HL_PRIM bool HL_NAME(build_mesh)(vbyte *vertbytes, int vertCount, vbyte *triByte
 	if (!m_cset)
 	{
 		ctx.log(RC_LOG_ERROR, "buildNavigation: Out of memory 'cset'.");
-		return false;
+		return NULL;
 	}
 	if (!rcBuildContours(&ctx, *m_chf, m_cfg.maxSimplificationError, m_cfg.maxEdgeLen, *m_cset))
 	{
 		ctx.log(RC_LOG_ERROR, "buildNavigation: Could not create contours.");
-		return false;
+		return NULL;
 	}
 
 	
@@ -334,12 +333,12 @@ HL_PRIM bool HL_NAME(build_mesh)(vbyte *vertbytes, int vertCount, vbyte *triByte
 	if (!m_pmesh)
 	{
 		ctx.log(RC_LOG_ERROR, "buildNavigation: Out of memory 'pmesh'.");
-		return false;
+		return NULL;
 	}
 	if (!rcBuildPolyMesh(&ctx, *m_cset, m_cfg.maxVertsPerPoly, *m_pmesh))
 	{
 		ctx.log(RC_LOG_ERROR, "buildNavigation: Could not triangulate contours.");
-		return false;
+		return NULL;
 	}
 
 	
@@ -351,13 +350,13 @@ HL_PRIM bool HL_NAME(build_mesh)(vbyte *vertbytes, int vertCount, vbyte *triByte
 	if (!m_dmesh)
 	{
 		ctx.log(RC_LOG_ERROR, "buildNavigation: Out of memory 'pmdtl'.");
-		return false;
+		return NULL;
 	}
 
 	if (!rcBuildPolyMeshDetail(&ctx, *m_pmesh, *m_chf, m_cfg.detailSampleDist, m_cfg.detailSampleMaxError, *m_dmesh))
 	{
 		ctx.log(RC_LOG_ERROR, "buildNavigation: Could not build detail mesh.");
-		return false;
+		return NULL;
 	}
 
 
@@ -369,12 +368,67 @@ HL_PRIM bool HL_NAME(build_mesh)(vbyte *vertbytes, int vertCount, vbyte *triByte
 		m_cset = 0;
 	}
 
-	std::cout << "Generated mesh with " << m_pmesh->npolys << " polygons. \n";
+	std::cout << "Generated mesh with " << m_pmesh->nverts << " verts. \n";
 	for (int i = 0; i < m_pmesh->npolys; i++) {
 		m_pmesh->polys[i];
 	}
 
-	return true;
+
+	int total_size = sizeof(*m_pmesh);
+
+	size_t verts_size = sizeof(short) * 3 * m_pmesh->nverts;
+	size_t polys_size = sizeof(short) * 2 * m_pmesh->nvp * m_pmesh->maxpolys;
+	size_t regs_size  = sizeof(short) * 1 * m_pmesh->maxpolys;
+	size_t flags_size = sizeof(short) * 1 * m_pmesh->maxpolys;
+	size_t areas_size = sizeof(char)  * 1 * m_pmesh->maxpolys;
+
+	size_t pointers_size = sizeof(m_pmesh->verts) + sizeof(m_pmesh->polys) + sizeof(m_pmesh->regs) + sizeof(m_pmesh->flags) + sizeof(m_pmesh->areas);
+
+	// Remove pointers from this
+	total_size -= pointers_size;
+
+	size_t struct_size = total_size;
+
+	total_size += verts_size + polys_size + regs_size + flags_size + areas_size;
+
+	vbyte* result = hl_alloc_bytes(total_size);
+	size_t p = 0;
+
+	void* s = m_pmesh;
+
+	// Copy static data (non pointer values, starting from nverts)
+	memcpy(result, &m_pmesh->nverts, struct_size);
+	p += struct_size;
+
+
+	// Copy dynamic values into buffer
+	memcpy(result + p, m_pmesh->verts, verts_size);
+	p += verts_size;
+
+	memcpy(result + p, m_pmesh->polys, polys_size);
+	p += polys_size;
+
+	memcpy(result + p, m_pmesh->regs, regs_size);
+	p += regs_size;
+
+	memcpy(result + p, m_pmesh->flags, flags_size);
+	p += flags_size;
+
+	memcpy(result + p, m_pmesh->areas, areas_size);
+	p += areas_size;
+
+	bool e = p == total_size;
+
+
+	std::cout << e << "\n";
+	blobSize = total_size;
+
+	rcFreePolyMesh(m_pmesh);
+	m_pmesh = 0;
+	rcFreePolyMeshDetail(m_dmesh);
+	m_dmesh = 0;
+
+	return result;
 }
 
-DEFINE_PRIM(_BOOL, build_mesh, _BYTES _I32 _BYTES _I32 _DYN);
+DEFINE_PRIM(_BYTES, build_mesh, _BYTES _I32 _BYTES _I32 _DYN _REF(_I32));

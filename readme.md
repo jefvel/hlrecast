@@ -1,4 +1,4 @@
-# RecastNavigation for Hashlink/Heaps
+# Recast Navigation for Hashlink + Heaps
 
 ## Building
 
@@ -8,4 +8,4 @@
 
 * Clone [Hashlink](https://github.com/HaxeFoundation/hashlink), or make sure that you have hashlink libs somewhere.
 
-* Run CMake in this repository, and make sure the cmake config variables are correct.
+* Run CMake using the CMakeLists.txt provided, and make sure the cmake config variables are correct.

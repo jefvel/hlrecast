@@ -1,4 +1,6 @@
 -cp .
 -lib hlrecast
+-lib heaps
+-lib hlsdl
 -main Test
 -hl test.hl

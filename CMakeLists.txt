@@ -38,6 +38,7 @@ set(HDLL_DESTINATION
 
 
 set(RECAST_SRC_DIR ${RECAST_NAVIGATION_PATH}/Recast/Source)
+set(RECAST_INC_DIR ${RECAST_NAVIGATION_PATH}/Recast/Include)
 set(DETOUR_SRC_DIR ${RECAST_NAVIGATION_PATH}/Detour/Source)
 set(DETOUR_TILE_CACHE_SRC_DIR ${RECAST_NAVIGATION_PATH}/DetourTileCache/Source)
 
@@ -49,9 +50,12 @@ include_directories(${SRC_DIR})
 add_library(recast.hdll SHARED
     # Recast Files
     ${RECAST_SRC_DIR}/Recast.cpp
+    ${RECAST_INC_DIR}/Recast.h
     ${RECAST_SRC_DIR}/RecastAlloc.cpp
+    ${RECAST_INC_DIR}/RecastAlloc.h
     ${RECAST_SRC_DIR}/RecastArea.cpp
     ${RECAST_SRC_DIR}/RecastAssert.cpp
+    ${RECAST_INC_DIR}/RecastAssert.h
     ${RECAST_SRC_DIR}/RecastContour.cpp
     ${RECAST_SRC_DIR}/RecastFilter.cpp
     ${RECAST_SRC_DIR}/RecastLayers.cpp
