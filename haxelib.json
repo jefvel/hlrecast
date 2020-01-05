@@ -1,10 +1,11 @@
 {
-	"name" : "recast",
-	"url" : "https://github.com/jefvel/recast",
-	"license" : "BSD",
-    "description" : "Recast support for Haxe HL",
+	"name" : "hlrecast",
+	"url" : "https://github.com/jefvel/hlrecast",
+	"license" : "MIT",
+	"description" : "Recast support for Haxe HL",
+	"tags": ["recast", "navmesh", "pathfinding", "recastnavigation", "api"],
     "version" : "0.1.0",
-	"releasenote" : "",
+	"releasenote" : "Initial Release",
 	"contributors" : ["jefvel"],
-	"dependencies": { "webidl" : "" }
+	"dependencies": { "heaps" : "" }
 }

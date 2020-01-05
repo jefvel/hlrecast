@@ -1,0 +1,12 @@
+
+interface rcConfig {
+    attribute int width;
+    attribute int height;
+    attribute int tileSize;
+    attribute int borderSize;
+    attribute float bmin;
+    attribute float bmax;
+    attribute float cs;
+    attribute float ch;
+    attribute float walkableSlopeAngle;
+};

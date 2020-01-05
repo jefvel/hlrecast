@@ -15,3 +15,5 @@ recast.hdll.vcxproj.filters
 recast.hdll.vcxproj.user
 recast.sln
 x64
+
+build

@@ -9,6 +9,7 @@ class Generator {
 #pragma warning(disable:4244)
 #pragma warning(disable:4316)
 #endif
+#include <Recast.h>
 
 ";
 

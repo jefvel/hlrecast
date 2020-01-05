@@ -1,0 +1,4 @@
+-cp .
+-lib hlrecast
+-main Test
+-hl test.hl
