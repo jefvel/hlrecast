@@ -15,6 +15,7 @@ class Test extends hxd.App {
         var mesh = new RecastMesh();
         var conf = new RecastConfig();
 
+        /*
         mesh.addVertex(0, 0, 0);
         mesh.addVertex(0, 100, 0);
         mesh.addVertex(100, 100, 0);
@@ -30,6 +31,7 @@ class Test extends hxd.App {
         mesh.addVertex(20, size, 0);
         mesh.addVertex(20, size, size);
         mesh.addVertex(20, 0, 0);
+        */
 
         //mesh.addTriangle(s + 0, s + 1, s + 2);
         //mesh.addTriangle(s + 0, s + 3, s + 1);
@@ -61,12 +63,12 @@ class Test extends hxd.App {
         mesh.addMesh(box);
 
         var stairsUp = new Mesh(prim, s3d);
-        stairsUp.x = 10;
-        stairsUp.z = 0.5;
-        stairsUp.y = 20;
+        stairsUp.x = 11.5;
+        stairsUp.z = 0.0;
+        stairsUp.y = 11.5;
         stairsUp.scaleY = 2.0;
         stairsUp.scaleX = 20;
-        stairsUp.rotate(0, Math.PI * -0.1, 0);
+        stairsUp.rotate(0, Math.PI * -0.1, Math.PI * 0.25);
         mesh.addMesh(stairsUp);
 
         var e = new h3d.prim.Cylinder(12);
@@ -91,6 +93,7 @@ class Test extends hxd.App {
         ground.material.color.setColor(0xdedede);
         ground.scaleX = ground.scaleY = 100;
         ground.x = ground.y = 50;
+        mesh.addMesh(ground);
         
         conf.setBounds(mesh.bounds);
 

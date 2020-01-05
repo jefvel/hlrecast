@@ -106,6 +106,10 @@ class RecastMesh {
         // Top
         addTriangle(s + 3, s + 5, s + 6);
         addTriangle(s + 3, s + 2, s + 5);
+
+        // Bottom
+        addTriangle(s + 4, s + 0, s + 1);
+        addTriangle(s + 4, s + 1, s + 7);
     }
 
     public function getVertBytes() : haxe.io.Bytes {

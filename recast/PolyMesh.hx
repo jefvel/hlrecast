@@ -68,7 +68,7 @@ class PolyMesh {
             vs.push(x);
             vs.push(y);
             vs.push(z);
-            points.push(new h3d.col.Point(x, y, z + res.ch * 0.1));
+            points.push(new h3d.col.Point(x, y, z + res.ch * 0.5));
         }
 
         var sizeOfShort = 2;
