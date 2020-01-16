@@ -1,9 +1,13 @@
 cmake_minimum_required(VERSION 3.12)
 project(recast)
 
-set(RECAST_NAVIGATION_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../recastnavigation" CACHE PATH "Path to recastnavigation repository")
-set(HASHLINK_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../hashlink" CACHE PATH "Path to where hashlink is")
-set(HASHLINK_LIB_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../hashlink/$(Configuration)" CACHE PATH "Path to where hashlink libraries are")
+set(RECAST_NAVIGATION_PATH "${CMAKE_CURRENT_SOURCE_DIR}/recastnavigation" CACHE PATH "Path to recastnavigation repository")
+set(HASHLINK_PATH "${CMAKE_CURRENT_SOURCE_DIR}/hashlink" CACHE PATH "Path to where hashlink is")
+if (WIN32) 
+set(HASHLINK_LIB_PATH "${CMAKE_CURRENT_SOURCE_DIR}/hashlink/$(Configuration)" CACHE PATH "Path to where hashlink libraries are")
+else()
+set(HASHLINK_LIB_PATH "${CMAKE_CURRENT_SOURCE_DIR}/hashlink" CACHE PATH "Path to where hashlink libraries are")
+endif()
 
 function(set_as_hdll target)
     set_target_properties(${target}.hdll
@@ -25,7 +29,7 @@ link_directories(${HASHLINK_LIB_PATH})
 
 add_definitions(-DRECAST_EXPORTS)
 
-if (!WIN32)
+if (NOT WIN32)
 add_definitions(-fpermissive)
 link_directories(/usr/local/lib)
 endif()
@@ -93,9 +97,15 @@ target_include_directories(recast.hdll
 )
 
 set_as_hdll(recast)
+if (WIN32)
 target_link_libraries(recast.hdll
     libhl
 )
+else()
+target_link_libraries(recast.hdll
+    hl
+)
+endif()
 set_target_properties(recast.hdll PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${HASHLINK_PATH}
 )

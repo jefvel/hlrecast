@@ -4,8 +4,14 @@
 
 * Clone this repository
 
-* Clone [Recast Navigation](https://github.com/recastnavigation/recastnavigation) into the directory this repository is in.
+* run the following commands to download [Recast Navigation](https://github.com/recastnavigation/recastnavigation):
 
-* Clone [Hashlink](https://github.com/HaxeFoundation/hashlink), or make sure that you have hashlink libs somewhere.
+```bash
+git submodule init
+git submodule update
+```
 
-* Run CMake using the CMakeLists.txt provided, and make sure the cmake config variables are correct.
+* have [Hashlink](https://github.com/HaxeFoundation/hashlink), in the same dir as this repo is in,
+  or set the `HASHLINK_PATH` to the correct one in CMake.
+
+* Run CMake using the CMakeLists.txt

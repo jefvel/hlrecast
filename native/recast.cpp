@@ -369,9 +369,9 @@ HL_PRIM vbyte *HL_NAME(build_mesh)(vbyte *vertbytes, int vertCount, vbyte *triBy
 	}
 
 	std::cout << "Generated mesh with " << m_pmesh->nverts << " verts. \n";
-	for (int i = 0; i < m_pmesh->npolys; i++) {
-		m_pmesh->polys[i];
-	}
+	//for (int i = 0; i < m_pmesh->npolys; i++) {
+		//m_pmesh->polys[i];
+	//}
 
 
 	int total_size = sizeof(*m_pmesh);

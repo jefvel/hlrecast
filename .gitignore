@@ -16,4 +16,8 @@ recast.hdll.vcxproj.user
 recast.sln
 x64
 
+*.DS_Store
+
+*.hl
+
 build
