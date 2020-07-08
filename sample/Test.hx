@@ -60,8 +60,9 @@ class Test extends hxd.App {
         box.scaleZ = 5;
         box.scaleX = 5;
         box.rotate(0, 0, Math.PI * 0.25);
-        mesh.addMesh(box);
+        mesh.addBoundingBox(box);
 
+        /*
         var stairsUp = new Mesh(prim, s3d);
         stairsUp.x = 11.5;
         stairsUp.z = 0.0;
@@ -69,7 +70,8 @@ class Test extends hxd.App {
         stairsUp.scaleY = 2.0;
         stairsUp.scaleX = 20;
         stairsUp.rotate(0, Math.PI * -0.1, Math.PI * 0.25);
-        mesh.addMesh(stairsUp);
+        mesh.addBoundingBox(stairsUp);
+        */
 
         var e = new h3d.prim.Cylinder(12);
         var cyl = new h3d.scene.Mesh(e, s3d);
@@ -77,7 +79,7 @@ class Test extends hxd.App {
         cyl.scaleX = cyl.scaleY = 2.0;
         cyl.x = 30;
         cyl.y = 35;
-        mesh.addMesh(cyl);
+        mesh.addBoundingBox(cyl);
 
         /*
         var b = new Mesh(prim, s3d);
@@ -93,7 +95,7 @@ class Test extends hxd.App {
         ground.material.color.setColor(0xdedede);
         ground.scaleX = ground.scaleY = 100;
         ground.x = ground.y = 50;
-        mesh.addMesh(ground);
+        mesh.addBoundingBox(ground);
         
         conf.setBounds(mesh.bounds);
 

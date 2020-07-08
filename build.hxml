@@ -1,0 +1,9 @@
+
+-cp sample 
+-lib webidl
+-lib hlrecast
+-lib heaps
+-lib hlsdl
+
+-main sample.Test
+-hl sample/test.hl

@@ -1,6 +1,7 @@
 package recast;
 
 
+import h3d.col.Bounds;
 import haxe.io.Int32Array;
 import haxe.io.Float32Array;
 import hxd.FloatBuffer;
@@ -16,6 +17,10 @@ class RecastMesh {
     public var bounds : h3d.col.Bounds;
 
     public function new() {
+        reset();
+    }
+
+    public function reset() {
         verts = [];
         tris = [];
         vertCount = triangleCount = 0;
@@ -42,28 +47,40 @@ class RecastMesh {
         addVertex(p.x, p.y, p.z);
     }
 
-    // Adds simplified object mesh to navmesh
-    public function addMesh(mesh : h3d.scene.Mesh) {
-        var pos = new h3d.col.Point(mesh.x, mesh.y, mesh.z);
-        var sx = mesh.scaleX;
-        var sy = mesh.scaleY;
-        var sz = mesh.scaleZ;
+    // Adds object as bounding box to navmesh
+    public function addBoundingBox(mesh : h3d.scene.Object) {
+        var pos = mesh.getAbsPos().getPosition().toPoint();
+        var s = mesh.getAbsPos().getScale();
+        //var q = mesh.getRotationQuat().toMatrix();
+        var q = mesh.getAbsRotationQuat().toMatrix();
 
-        var q = mesh.getRotationQuat().toMatrix();
-        var b = mesh.primitive.getBounds();
+        var b = new Bounds();
+        b.addPos(-.5, -.5, -.5);
+        b.addPos(.5, .5, .5);
 
-        var s = vertCount;
+        /*
+        var m = mesh.toMesh();
+        b = m.getBounds();
 
-        var p0 = new h3d.col.Point(b.xMin * sx, b.yMax * sy, b.zMin * sz);
-        var p1 = new h3d.col.Point(b.xMin * sx, b.yMin * sy, b.zMin * sz);
-        var p2 = new h3d.col.Point(b.xMin * sx, b.yMax * sy, b.zMax * sz);
-        var p3 = new h3d.col.Point(b.xMin * sx, b.yMin * sy, b.zMax * sz);
+        s.x = m.scaleX;
+        s.y = m.scaleY;
+        s.z = m.scaleZ;
 
-        var p4 = new h3d.col.Point(b.xMax * sx, b.yMax * sy, b.zMin * sz);
-        var p5 = new h3d.col.Point(b.xMax * sx, b.yMax * sy, b.zMax * sz);
+        pos.x = m.x;
+        pos.y = m.y;
+        pos.z = m.z;
+        */
 
-        var p6 = new h3d.col.Point(b.xMax * sx, b.yMin * sy, b.zMax * sz);
-        var p7 = new h3d.col.Point(b.xMax * sx, b.yMin * sy, b.zMin * sz);
+        var p0 = new h3d.col.Point(b.xMin * s.x, b.yMax * s.y, b.zMin * s.z);
+        var p1 = new h3d.col.Point(b.xMin * s.x, b.yMin * s.y, b.zMin * s.z);
+        var p2 = new h3d.col.Point(b.xMin * s.x, b.yMax * s.y, b.zMax * s.z);
+        var p3 = new h3d.col.Point(b.xMin * s.x, b.yMin * s.y, b.zMax * s.z);
+
+        var p4 = new h3d.col.Point(b.xMax * s.x, b.yMax * s.y, b.zMin * s.z);
+        var p5 = new h3d.col.Point(b.xMax * s.x, b.yMax * s.y, b.zMax * s.z);
+
+        var p6 = new h3d.col.Point(b.xMax * s.x, b.yMin * s.y, b.zMax * s.z);
+        var p7 = new h3d.col.Point(b.xMax * s.x, b.yMin * s.y, b.zMin * s.z);
 
         p0.transform3x3(q); p0 = p0.add(pos);
         p1.transform3x3(q); p1 = p1.add(pos);
@@ -75,6 +92,8 @@ class RecastMesh {
 
         p6.transform3x3(q); p6 = p6.add(pos);
         p7.transform3x3(q); p7 = p7.add(pos);
+
+        var s = vertCount;
 
         addPoint(p0);
         addPoint(p1);

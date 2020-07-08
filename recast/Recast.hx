@@ -6,6 +6,8 @@ class Recast {
     public static function buildMesh(mesh : RecastMesh, conf : RecastConfig) : PolyMesh {
         var b = 0;
 
+        if (mesh.vertCount < 3) return null;
+
         var bytes = _BuildMesh(
             mesh.getVertBytes(), 
             mesh.vertCount,

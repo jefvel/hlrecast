@@ -1,4 +1,4 @@
-#include "recast.h"
+#include "hlrecast.h"
 #include <hl.h>
 
 #include <iostream>
@@ -144,14 +144,12 @@ HL_PRIM vbyte *HL_NAME(build_mesh)(vbyte *vertbytes, int vertCount, vbyte *triBy
 	setConfig(c);
 	rcContext ctx;
 
-/*
 	for (int i = 0; i < vertCount; i++) {
 		std::cout << " x: " << verts[i * 3];
 		std::cout << " y: " << verts[i * 3 + 1];
 		std::cout << " z: " << verts[i * 3 + 2];
 		std::cout << "\n";
 	}
-*/
 
 	m_solid = rcAllocHeightfield();
 	if (!m_solid) {
@@ -371,21 +369,9 @@ HL_PRIM vbyte *HL_NAME(build_mesh)(vbyte *vertbytes, int vertCount, vbyte *triBy
 	}
 
 	//std::cout << "Generated mesh with " << m_pmesh->nverts << " verts. \n";
-	//for (int i = 0; i < m_pmesh->npolys; i++) {
-		//m_pmesh->polys[i];
-	//}
-
-
-	/*
-	dtNavMesh* dMesh = dtAllocNavMesh();
-	dtNavMeshParams params;
-	params.maxPolys = m_pmesh->maxpolys;
-	params.maxTiles = 1024;
-	params.orig[0] = params.orig[1] = params.orig[2] = 0.0;
-	dMesh->init(
-		&params
-	);
-	*/
+	for (int i = 0; i < m_pmesh->npolys; i++) {
+		m_pmesh->polys[i];
+	}
 
 
 	int total_size = sizeof(*m_pmesh);
@@ -434,7 +420,7 @@ HL_PRIM vbyte *HL_NAME(build_mesh)(vbyte *vertbytes, int vertCount, vbyte *triBy
 	bool e = p == total_size;
 
 
-	std::cout << e << "\n";
+	//std::cout << e << "\n";
 	blobSize = total_size;
 
 	rcFreePolyMesh(m_pmesh);
@@ -446,3 +432,42 @@ HL_PRIM vbyte *HL_NAME(build_mesh)(vbyte *vertbytes, int vertCount, vbyte *triBy
 }
 
 DEFINE_PRIM(_BYTES, build_mesh, _BYTES _I32 _BYTES _I32 _DYN _REF(_I32));
+
+
+
+NavMesh::NavMesh() {
+
+}
+
+NavMesh::~NavMesh() {
+}
+
+void NavMesh::destroy() {
+
+}
+
+float NavMesh::test(float positions[], int len)
+{
+	float res = 0.f;
+	for (int i = 0; i < len; i++) {
+		res += positions[i];
+	}
+
+	return res;
+}
+
+
+bool NavMesh::build(const float* positions, const int positionCount, const int* indices, const int indexCount, const rcConfig& config)
+{
+	return false;
+}
+
+Vec3 NavMesh::getClosestPoint(const Vec3& point) {
+	Vec3 v;
+	v.x = 100;
+	v.y = 312;
+	v.z = 34.f;
+	return v;
+}
+
+

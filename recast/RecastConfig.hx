@@ -34,7 +34,7 @@ class RecastConfig {
 
     public var walkableHeight : Int = 4;
     public var walkableClimb : Int = 2;
-    public var walkableRadius : F32 = 0.0;
+    public var walkableRadius : Int = 0;
 
     public var maxEdgeLen : Int;
     public var maxSimplificationError : F32;

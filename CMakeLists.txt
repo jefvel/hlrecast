@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.12)
 project(recast)
 
 set(RECAST_NAVIGATION_PATH "${CMAKE_CURRENT_SOURCE_DIR}/recastnavigation" CACHE PATH "Path to recastnavigation repository")
-set(HASHLINK_PATH "${CMAKE_CURRENT_SOURCE_DIR}/hashlink" CACHE PATH "Path to where hashlink is")
+set(HASHLINK_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../hashlink" CACHE PATH "Path to where hashlink is")
 if (WIN32) 
-set(HASHLINK_LIB_PATH "${CMAKE_CURRENT_SOURCE_DIR}/hashlink/$(Configuration)" CACHE PATH "Path to where hashlink libraries are")
+set(HASHLINK_LIB_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../hashlink/$(Configuration)" CACHE PATH "Path to where hashlink libraries are")
 else()
-set(HASHLINK_LIB_PATH "${CMAKE_CURRENT_SOURCE_DIR}/hashlink" CACHE PATH "Path to where hashlink libraries are")
+set(HASHLINK_LIB_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../hashlink" CACHE PATH "Path to where hashlink libraries are")
 endif()
 
 function(set_as_hdll target)
@@ -26,6 +26,7 @@ include_directories(${RECAST_NAVIGATION_PATH}/DetourTileCache/Include)
 include_directories(${RECAST_NAVIGATION_PATH}/DebugUtils/Include)
 
 link_directories(${HASHLINK_LIB_PATH})
+link_directories("C:/Users/jefvel/projects/hashlink/x64/Release")
 
 add_definitions(-DRECAST_EXPORTS)
 
@@ -39,7 +40,6 @@ include(GNUInstallDirs)
 set(HDLL_DESTINATION
     ${CMAKE_INSTALL_LIBDIR}
 )
-
 
 set(RECAST_SRC_DIR ${RECAST_NAVIGATION_PATH}/Recast/Source)
 set(RECAST_INC_DIR ${RECAST_NAVIGATION_PATH}/Recast/Include)
